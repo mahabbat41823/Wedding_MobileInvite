@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모바일 청첩장 업체 비교</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2c2723;
+    --ink-soft:#6f665d;
+    --paper:#faf6f0;
+    --card:#fffdfa;
+    --line:#e8ded1;
+    --line-soft:#f1e9dd;
+    --rose:#a85d52;
+    --rose-soft:#c9a59c;
+    --blush:#f3e6e1;
+    --yes:#5d7d61;
+    --yes-bg:#ecf2ec;
+    --partial:#b58a3c;
+    --partial-bg:#f6efe0;
+    --no:#b56a60;
+    --no-bg:#f6e9e7;
+    --na:#a59c92;
+    --na-bg:#f0ebe3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 80px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{text-align:center;padding:64px 24px 40px}
+  .eyebrow{
+    font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--rose);font-weight:500;margin-bottom:18px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;font-weight:700;
+    font-size:2.6rem;line-height:1.25;letter-spacing:-.01em;
+  }
+  header h1 .amp{color:var(--rose-soft);font-weight:400}
+  header p{color:var(--ink-soft);margin-top:16px;font-size:.98rem;font-weight:300}
+  .rule{width:46px;height:1px;background:var(--rose-soft);margin:28px auto 0}
+
+  /* Section heading */
+  .section-head{display:flex;align-items:baseline;gap:14px;margin:56px 0 22px}
+  .section-head .no{
+    font-family:'Gowun Batang',serif;color:var(--rose-soft);
+    font-size:1.05rem;font-weight:700;letter-spacing:.05em;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:1.55rem;font-weight:700;letter-spacing:-.01em;
+  }
+  .section-head .hint{margin-left:auto;font-size:.8rem;color:var(--ink-soft);font-weight:300}
+
+  /* Legend */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 18px;font-size:.82rem;color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:.72rem;font-weight:700}
+  .d-yes{background:var(--yes-bg);color:var(--yes)}
+  .d-partial{background:var(--partial-bg);color:var(--partial)}
+  .d-no{background:var(--no-bg);color:var(--no)}
+  .d-na{background:var(--na-bg);color:var(--na)}
+
+  /* Matrix */
+  .matrix-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);
+    box-shadow:0 1px 0 rgba(0,0,0,.02)}
+  table.matrix{border-collapse:collapse;width:100%;min-width:760px;font-size:.9rem}
+  table.matrix th,table.matrix td{padding:13px 12px;text-align:center;border-bottom:1px solid var(--line-soft)}
+  table.matrix thead th{
+    background:var(--blush);position:sticky;top:0;z-index:3;
+    font-family:'Gowun Batang',serif;font-weight:700;font-size:.92rem;color:var(--ink);
+    border-bottom:1px solid var(--line);
+  }
+  table.matrix thead th:first-child{z-index:4;background:var(--blush)}
+  table.matrix tbody tr:last-child td{border-bottom:none}
+  table.matrix tbody tr:hover td{background:#fcf8f3}
+  .rowlabel{
+    text-align:left;font-weight:500;white-space:nowrap;
+    position:sticky;left:0;background:var(--card);z-index:2;
+    border-right:1px solid var(--line-soft);
+  }
+  table.matrix tbody tr:hover .rowlabel{background:#fcf8f3}
+  .cell-note{display:block;font-size:.72rem;color:var(--ink-soft);font-weight:300;margin-top:2px}
+  .price{font-weight:700}
+  .price.free{color:var(--yes)}
+  .num{font-weight:700;font-size:1.02rem}
+  .mark{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:.8rem;font-weight:700}
+  .m-yes{background:var(--yes-bg);color:var(--yes)}
+  .m-partial{background:var(--partial-bg);color:var(--partial)}
+  .m-no{background:var(--no-bg);color:var(--no)}
+  .m-na{background:var(--na-bg);color:var(--na)}
+  .warn{color:var(--rose);font-weight:700}
+
+  /* Vendor cards */
+  .vendor{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:28px 30px;margin-top:20px;
+  }
+  .vendor-top{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin-bottom:6px}
+  .vendor-top h3{font-family:'Gowun Batang',serif;font-size:1.45rem;font-weight:700}
+  .badge{
+    font-size:.82rem;font-weight:700;padding:5px 12px;border-radius:999px;
+    background:var(--blush);color:var(--rose);
+  }
+  .badge.free{background:var(--yes-bg);color:var(--yes)}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 4px}
+  .tag{font-size:.78rem;padding:4px 11px;border-radius:7px;background:var(--paper);border:1px solid var(--line-soft);color:var(--ink-soft)}
+  .oneliner{font-size:.92rem;color:var(--ink-soft);font-weight:300;margin-top:10px;font-style:italic}
+
+  .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+  .pc h4{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;font-weight:700}
+  .pc.pros h4{color:var(--yes)}
+  .pc.cons h4{color:var(--no)}
+  .pc ul{list-style:none}
+  .pc li{position:relative;padding-left:20px;margin-bottom:7px;font-size:.9rem}
+  .pc.pros li::before{content:"+";position:absolute;left:2px;color:var(--yes);font-weight:700}
+  .pc.cons li::before{content:"–";position:absolute;left:4px;color:var(--no);font-weight:700}
+
+  details.full{margin-top:20px;border-top:1px solid var(--line-soft);padding-top:14px}
+  details.full summary{
+    cursor:pointer;font-size:.86rem;font-weight:500;color:var(--rose);
+    list-style:none;display:flex;align-items:center;gap:7px;
+  }
+  details.full summary::-webkit-details-marker{display:none}
+  details.full summary::before{content:"＋";font-weight:700}
+  details.full[open] summary::before{content:"－"}
+  .opt-groups{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+  .opt-groups dt{font-weight:700;font-size:.85rem;margin-top:10px;color:var(--ink)}
+  .opt-groups dd{font-size:.86rem;color:var(--ink-soft);font-weight:300;margin-bottom:2px;padding-left:2px}
+
+  /* Pick note */
+  .picks{background:var(--blush);border-radius:16px;padding:26px 30px;margin-top:24px}
+  .picks h3{font-family:'Gowun Batang',serif;font-size:1.2rem;margin-bottom:14px}
+  .picks ul{list-style:none}
+  .picks li{padding:7px 0;border-bottom:1px solid rgba(168,93,82,.15);font-size:.92rem}
+  .picks li:last-child{border-bottom:none}
+  .picks b{color:var(--rose)}
+
+  footer{text-align:center;color:var(--na);font-size:.8rem;margin-top:50px;font-weight:300}
+
+  @media(max-width:680px){
+    header h1{font-size:2rem}
+    .pros-cons,.opt-groups{grid-template-columns:1fr}
+    .vendor{padding:24px 20px}
+    .section-head .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Mobile Invitation</div>
+  <h1>모바일 청첩장 업체 비교</h1>
+  <p>6개 업체의 가격 · 기능 · 장단점을 한눈에</p>
+  <div class="rule"></div>
+</header>
+
+<div class="wrap">
+
+  <!-- ===== 한눈에 비교 ===== -->
+  <div class="section-head">
+    <span class="no">01</span>
+    <h2>한눈에 비교</h2>
+    <span class="hint">가로로 스크롤하면 모든 업체가 보여요</span>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot d-yes">O</i> 가능</span>
+    <span><i class="dot d-partial">△</i> 부분 / 제한적</span>
+    <span><i class="dot d-no">X</i> 없음</span>
+    <span><i class="dot d-na">–</i> 정보 없음(확인 필요)</span>
+  </div>
+
+  <div class="matrix-scroll">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th class="rowlabel">항목</th>
+          <th>웨딩북</th>
+          <th>샬롱드레터</th>
+          <th>To our guest</th>
+          <th>웨딩 피켓</th>
+          <th>데어무드</th>
+          <th>보자기카드</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rowlabel">가격</td>
+          <td><span class="price free">무료</span></td>
+          <td><span class="price">13,900원</span></td>
+          <td><span class="price">18,600원</span><span class="cell-note">6월 1+1 행사</span></td>
+          <td><span class="price">11,200원</span></td>
+          <td><span class="price">19,800원</span><span class="cell-note">리뷰 시 1+1 · 26년 인상예정</span></td>
+          <td><span class="price">무료</span><span class="cell-note">종이청첩장 구매 시</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">갤러리 최대</td>
+          <td><span class="num">20</span>장</td>
+          <td><span class="num">60</span>장</td>
+          <td><span class="num">60</span>장</td>
+          <td><span class="num">20</span>장</td>
+          <td><span class="num">100</span>장</td>
+          <td><span class="num">21</span>장</td>
+        </tr>
+        <tr>
+          <td class="rowlabel">디자인 수</td>
+          <td>14종</td>
+          <td>10종</td>
+          <td>18종</td>
+          <td>6종</td>
+          <td>50+종</td>
+          <td>159종</td>
+        </tr>
+        <tr>
+          <td class="rowlabel">신랑·신부 소개</td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-na">–</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">연애 타임라인</td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-no">X</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">하객 스냅</td>
+          <td><span class="mark m-partial">△</span><span class="cell-note">자체 폴더 · 30일</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">구글 · 6일</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">데이앨범 3개월 무료</span></td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">구글 · 용량 추가결제</span></td>
+          <td><span class="mark m-no">X</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">영상 첨부</td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">제작신청 시 2만원</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">카카오페이 송금</td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">수수료 가능성</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span><span class="cell-note">수수료 없음</span></td>
+          <td><span class="mark m-yes">O</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">쌀 화환</td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-no">X</span><span class="cell-note">쌀화환만 선택 불가</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="warn">확인 필요</span><span class="cell-note">옵션·단점 설명 상충</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">배경음악 직접 업로드</td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-no">X</span><span class="cell-note">21곡 복수선택</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">오프닝 문구 수정</td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-partial">△</span><span class="cell-note">타이핑 타입만</span></td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-no">X</span><span class="cell-note">제목 전체 수정불가</span></td>
+          <td><span class="mark m-partial">△</span><span class="cell-note">선택에 따라 제한</span></td>
+          <td><span class="mark m-no">X</span><span class="cell-note">메인 문구 없음</span></td>
+        </tr>
+        <tr>
+          <td class="rowlabel">방명록 비공개</td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-na">–</span></td>
+          <td><span class="mark m-no">X</span></td>
+          <td><span class="mark m-yes">O</span></td>
+          <td><span class="mark m-no">X</span><span class="cell-note">전체 공개</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 업체별 상세 ===== -->
+  <div class="section-head">
+    <span class="no">02</span>
+    <h2>업체별 상세</h2>
+    <span class="hint">‘전체 옵션 보기’를 누르면 기능 목록이 펼쳐져요</span>
+  </div>
+
+  <!-- 웨딩북 -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>웨딩북</h3>
+      <span class="badge free">무료</span>
+    </div>
+    <div class="tags">
+      <span class="tag">갤러리 20장</span><span class="tag">메인 디자인 14종</span>
+      <span class="tag">오프닝 문구 변경</span><span class="tag">배경음악 10곡</span>
+    </div>
+    <p class="oneliner">비용 부담 없이 기본기를 챙기고 싶을 때.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>완전 무료</li>
+          <li>오프닝 사진·문구 3가지 변경 가능</li>
+          <li>메인화면 2장 이상이면 자동 애니메이션</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>갤러리 최대 20장</li>
+          <li>오프닝 글귀 속도 조절 불가</li>
+          <li>하객 스냅 구글 연동 X (자체 폴더, 용량 한정)</li>
+          <li>신랑·신부 소개 / 연애 타임라인 없음</li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>오프닝</dt><dd>사진 3개 · 문구 3개</dd>
+        <dt>메인 화면</dt><dd>디자인 14종 · 이미지 최대 5장(2장↑ 애니메이션)</dd>
+        <dt>인사말</dt><dd>제목 · 내용 수정</dd>
+        <dt>예식일</dt><dd>캘린더 & 카운트다운</dd>
+        <dt>교통/안내</dt><dd>제목·내용 수정(글씨 스타일 변경 불가), 안내 문구 추가</dd>
+        <dt>마음 전하기</dt><dd>펀딩(신혼여행 등) · 선물펀딩 · 계좌번호(버튼명 수정, 팝업)</dd>
+        <dt>갤러리</dt><dd>최대 20장 · 중간사진 1장</dd>
+        <dt>배경음악</dt><dd>10곡 중 택1</dd>
+        <dt>참석여부</dt><dd>식사·답례품·버스 항목, 팝업</dd>
+        <dt>방명록</dt><dd>공개 여부 설정</dd>
+        <dt>하객 스냅</dt><dd>웨딩북 폴더 저장 · 30일 보관</dd>
+        <dt>공지/엔딩</dt><dd>공지사항(이미지·버튼) · 엔딩 메시지(사진+내용)</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- 샬롱드레터 -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>샬롱드레터</h3>
+      <span class="badge">13,900원</span>
+    </div>
+    <div class="tags">
+      <span class="tag">갤러리 60장</span><span class="tag">웨딩 인터뷰</span>
+      <span class="tag">레터링 커스텀</span><span class="tag">당일 안내 팝업</span>
+    </div>
+    <p class="oneliner">레터링·인터뷰 등 감성 연출이 강한 편.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>갤러리 최대 60장</li>
+          <li>영상 첨부(URL) 가능</li>
+          <li>카톡 썸네일에 위치, 날짜, 시간 + 지도 연동 버튼 노출</li>
+          <li>예식 당일 안내 팝업(위치·시간·길·전화·화환)</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>제작이 예식 11개월 전부터 가능</li>
+          <li>오프닝·메인 레터링 문구 변경 불가(타이핑 타입은 가능)</li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>메인/오프닝</dt><dd>레터링 위치·속도·색상 / 사진 위 글씨 or 타이핑</dd>
+        <dt>예식일</dt><dd>달력(한글·심플) · 디데이(카운트·사진 위)</dd>
+        <dt>인사말/글귀</dt><dd>제목·문구·사진, 인용 문구 삽입</dd>
+        <dt>소개</dt><dd>신랑·신부 각 1장 + 소개글 · 연락처 아이콘</dd>
+        <dt>타임라인</dt><dd>에피소드별 사진+제목+내용</dd>
+        <dt>웨딩 인터뷰</dt><dd>질문·답변 작성, 팝업</dd>
+        <dt>갤러리</dt><dd>최대 60장(썸네일 위치 설정) · 영상 유튜브 URL</dd>
+        <dt>오시는 길</dt><dd>네이버·티맵·카카오 + 교통 안내, 카드형/박스형</dd>
+        <dt>마음 전하기</dt><dd>계좌·카카오페이(수수료 가능)</dd>
+        <dt>참석/방명록</dt><dd>RSVP · 방명록(메일·전화 수신)</dd>
+        <dt>화환</dt><dd>축하·쌀·거절 자동 링크</dd>
+        <dt>하객 스냅</dt><dd>구글 연동 · 당일~5일(6일)</dd>
+        <dt>기타</dt><dd>폰트·배경·효과 조정 · 상단 메뉴바 · 첫만남 디데이 · 배경음악 13곡+추가</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- To our guest -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>To our guest</h3>
+      <span class="badge">18,600원</span>
+    </div>
+    <div class="tags">
+      <span class="tag">갤러리 60장</span><span class="tag">배경음악 업로드</span>
+      <span class="tag">외부 링크 2개</span><span class="tag">데이앨범 3개월</span>
+    </div>
+    <p class="oneliner">커스터마이징 폭이 넓고 외부 연동이 자유로움.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>배경음악 직접 업로드</li>
+          <li>갤러리 최대 60장</li>
+          <li>외부 링크 2개 연동(인스타·맛집 지도 등)</li>
+          <li>하객 스냅 데이앨범 3개월 무료·무제한</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>오프닝 문구 변경 불가(지정)</li>
+          <li>화환 중 쌀화환만 단독 선택 불가</li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>첫화면</dt><dd>사진·밝기·테마색·배경색·글자색·문구 위치·효과</dd>
+        <dt>공유</dt><dd>카톡·URL 이미지·문구 별도 설정 · 오프닝 레터링 색/위치</dd>
+        <dt>전체 톤</dt><dd>포트 18종 중 택1 · 배경음악 18곡 or 업로드</dd>
+        <dt>모시는 글</dt><dd>꾸밈 스티커·문구·이미지</dd>
+        <dt>예식일</dt><dd>날짜·숫자·시간형 / 캘린더·카운트다운·디데이</dd>
+        <dt>소개</dt><dd>양가 연락처 팝업 · 신랑·신부 1장+소개글 · 타임라인</dd>
+        <dt>갤러리</dt><dd>최대 60장(썸네일·확대방지 설정)</dd>
+        <dt>오시는 길</dt><dd>티맵·네이버·카카오 + 자차·버스·지하철·주차 안내</dd>
+        <dt>마음 전하기</dt><dd>카카오페이 연동</dd>
+        <dt>참석/방명록</dt><dd>식사·전세버스·인원·전달, 피로연 별도 안내 · 방명록 공개</dd>
+        <dt>기타</dt><dd>외부 링크 2개 · 화환 자동링크 · 영상 유튜브 · 중간 이미지 · 하객스냅(데이앨범 3개월)</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- 웨딩 피켓 -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>웨딩 피켓</h3>
+      <span class="badge">11,200원</span>
+    </div>
+    <div class="tags">
+      <span class="tag">AI 사진 보정</span><span class="tag">배경음악 업로드</span>
+      <span class="tag">식순 안내</span><span class="tag">템플릿 6종</span>
+    </div>
+    <p class="oneliner">가격이 가장 저렴하고 AI 보정이 강점이지만 커스텀은 제한적.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>AI 사진 보정 최대 10장 무료</li>
+          <li>배경음악 직접 업로드</li>
+          <li>예식 식순 안내 기능</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>템플릿 6종으로 제한적</li>
+          <li>모든 섹션 제목 수정 불가</li>
+          <li>방명록 비공개 옵션 없음 · 하객 스냅 없음</li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>템플릿</dt><dd>6종 중 택1</dd>
+        <dt>인사말/안내</dt><dd>문구만 수정(제목 X) · 교통·주차 안내 · 안내사항·엔딩 문구</dd>
+        <dt>갤러리</dt><dd>최대 20장(레이아웃 6종)</dd>
+        <dt>타임라인</dt><dd>제목·날짜·설명·사진</dd>
+        <dt>식순</dt><dd>항목별 시간·제목·설명</dd>
+        <dt>참석여부</dt><dd>신랑·신부 측, 식사·동행인·전달사항</dd>
+        <dt>방명록</dt><dd>비공개 옵션 없음</dd>
+        <dt>마음 전하기</dt><dd>롤업 형식</dd>
+        <dt>연락처</dt><dd>박스 클릭 팝업(문자·전화 버튼)</dd>
+        <dt>공유/음악</dt><dd>카톡 썸네일·제목·설명 · 커스텀 URL · 배경음악 4곡+업로드</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- 데어무드 -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>데어무드</h3>
+      <span class="badge">19,800원</span>
+    </div>
+    <div class="tags">
+      <span class="tag">갤러리 100장</span><span class="tag">디자인 50+</span>
+      <span class="tag">1:1 편지 동봉</span><span class="tag">사이드 메뉴바</span>
+      <span class="tag">무료 부가서비스</span>
+    </div>
+    <p class="oneliner">기능·용량·부가서비스가 가장 풍부한 ‘올인원’.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>갤러리 100장 · 중간사진 최대 5장(가장 많음)</li>
+          <li>배경음악 직접 추가 · 방명록 비공개 설정</li>
+          <li>1:1 편지와 함께 청첩장 전송 · 사이드 메뉴바</li>
+          <li>카톡 썸네일에 위치, 날짜, 시간 + 지도 연동 버튼 노출</li>
+          <li>축의금 리스트·웨딩가계부·사회자 대본 등 무료 부가서비스</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>가격대가 높은 편(2026년 인상 예정)</li>
+          <li>오프닝 애니메이션은 사진/문구 동시 사용 제한</li>
+          <li>하객 스냅 구글 드라이브 용량 추가 결제 필요</li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>테마/메인</dt><dd>문구·배경·색상·효과 변경 · 메인 디자인 50+(사진 삽입)</dd>
+        <dt>인사말/소개</dt><dd>제목·내용+사진 · 신랑·신부 1장+소개글(레이아웃 변경)</dd>
+        <dt>예식일</dt><dd>캘린더 & 디데이·카운트다운</dd>
+        <dt>오시는 길</dt><dd>티맵·네이버·카카오 · 교통·주차 제목/내용 수정</dd>
+        <dt>갤러리</dt><dd>최대 100장(썸네일 다듬기) · 중간사진 최대 5장</dd>
+        <dt>마음 전하기</dt><dd>노출 타입 수정 · 카카오페이(수수료 없음)</dd>
+        <dt>참석/방명록</dt><dd>인원·연락처·식사·전달, 접속 시 팝업 · 방명록 숨기기·스타일</dd>
+        <dt>인터뷰/타임라인</dt><dd>자유 답변+사진 · 커버사진+에피소드</dd>
+        <dt>공유/메뉴</dt><dd>카톡·URL 메시지·사진 별도 · 사이드 메뉴바 · 카톡 지도 바로보기</dd>
+        <dt>특별 기능</dt><dd>1:1 편지 동봉 · 웨딩키트 자동생성 · 영상 유튜브 · 화환 자동링크</dd>
+        <dt>무료 부가</dt><dd>스냅 선택·축의금 리스트·웨딩가계부·BGM 리스트·사회자 대본</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- 보자기카드 -->
+  <div class="vendor">
+    <div class="vendor-top">
+      <h3>보자기카드</h3>
+      <span class="badge free">종이 구매 시 무료</span>
+    </div>
+    <div class="tags">
+      <span class="tag">디자인 159종</span><span class="tag">배경음악 21곡</span>
+      <span class="tag">꽃·쌀화환</span><span class="tag">종이+모바일</span>
+    </div>
+    <p class="oneliner">디자인 선택지가 가장 많고, 종이 청첩장과 함께 쓰기 좋음.</p>
+    <div class="pros-cons">
+      <div class="pc pros">
+        <h4>장점</h4>
+        <ul>
+          <li>디자인 159종으로 선택지 최다</li>
+          <li>종이 청첩장 프린트 시 모바일 무료</li>
+          <li>배경음악 21곡 복수 선택·랜덤 재생</li>
+        </ul>
+      </div>
+      <div class="pc cons">
+        <h4>단점</h4>
+        <ul>
+          <li>하객 스냅 없음 · 연애 타임라인 없음</li>
+          <li>안내사항 문구 글자 수 제한(50자)</li>
+          <li>화환에서 쌀화환 옵션 여부가 자료상 상충 → <b>확인 필요</b></li>
+        </ul>
+      </div>
+    </div>
+    <details class="full">
+      <summary>전체 옵션 보기</summary>
+      <dl class="opt-groups">
+        <dt>디자인</dt><dd>총 159종 · 편집 스타일 5종</dd>
+        <dt>메인 화면</dt><dd>사진 3개 자동 전환(문구 없음)</dd>
+        <dt>인사말/연락처</dt><dd>제목·내용 수정 · 메인 연락처(전화·문자)</dd>
+        <dt>예식일</dt><dd>달력 표시/미표시</dd>
+        <dt>갤러리/영상</dt><dd>최대 21장 · 영상 업로드 또는 제작신청(2만원)</dd>
+        <dt>오시는 길</dt><dd>카카오맵·약도 · 티맵·네이버·카카오 연동 · 교통·주차(내용만)</dd>
+        <dt>안내사항</dt><dd>버스·피로연·화환 등, 50자 이내 표 형식</dd>
+        <dt>마음 전하기</dt><dd>계좌 복사 또는 카카오 송금</dd>
+        <dt>참석/방명록</dt><dd>성함·연락처 필수, 식사·전달 · 방명록 전체 공개</dd>
+        <dt>음악/화환</dt><dd>배경음악 21곡 복수선택 · 화환 배송(꽃·쌀 — 표기 상충)</dd>
+      </dl>
+    </details>
+  </div>
+
+  <!-- ===== 추천 포인트 ===== -->
+  <div class="picks">
+    <h3>고민될 때 기준 잡기</h3>
+    <ul>
+      <li><b>예산 0원</b> — 웨딩북(완전 무료) </li>
+      <li><b>사진을 많이 넣고 싶다면</b> — 데어무드(100장) &gt; 샬롱드레터·To our guest(60장)</li>
+      <li><b>기능·부가서비스 풀패키지</b> — 데어무드 (편지 동봉·가계부·대본 등)</li>
+      <li><b>하객 스냅이 중요하다면</b> — To our guest(3개월 무제한) &gt; 샬롱드레터 · 데어무드 (구글계정 연동 - 용량은 따로 구매) </li>
+      <li><b>디자인 선택지</b> —  보자기카드 (159종) · 데어무드(50+종)</li>
+      <li><b>혼주 & 친구용 (1+1) 청첩장 </b> — 웨딩북 (무료)  · To our guest (6월 행사, 하지만 지속적으로 하는 것 같음)  · 데어무드 (리뷰 시) </li>
+      <li><b>예식 당일 안내 팝업 </b> — 샬롱드레터 (본식 당일 위치, 시간, 오시는 길, 전화, 화환 등 필요한 정보만 팝업) </li>
+      <li><b>카카오톡 공유 썸네일에 지도 연동 </b> — 샬롱드레터 (썸네일에 위치, 날짜, 시간 안내, 추가로 지도 연동 버튼) · 데어무드</li>
+      <li><b>사진 AI로 보정이 필요하다면</b> — 웨딩 피켓(11,200원, AI 보정 포함)</li>
+      <li><b>종이청첩장이랑 똑같은 디자인 (기본적인 정보만 제공하는 모청) </b> — 보자기카드 (종이청첩장 구매시 무료, 디자인 159종)</li>
+
+    </ul>
+  </div>
+
+  <footer>※ 본 비교는 작성해 주신 메모 기준입니다. 가격·행사·세부 기능은 업체 사정에 따라 달라질 수 있어 계약 전 확인을 권장해요.</footer>
+
+</div>
+</body>
+</html>
