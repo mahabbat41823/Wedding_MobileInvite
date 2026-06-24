@@ -155,6 +155,29 @@
     .vendor{padding:24px 20px}
     .section-head .hint{display:none}
   }
+  
+  /* 기준 잡기 표 */
+  .picks-head{display:flex;align-items:baseline;gap:14px;margin:56px 0 18px}
+  .picks-head .no{font-family:'Gowun Batang',serif;color:var(--rose-soft);font-size:1.05rem;font-weight:700;letter-spacing:.05em}
+  .picks-head h2{font-family:'Gowun Batang',serif;font-size:1.55rem;font-weight:700;letter-spacing:-.01em}
+  .guide-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 1px 0 rgba(0,0,0,.02)}
+  table.guide{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+  table.guide th,table.guide td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+  table.guide thead th{background:var(--blush);font-family:'Gowun Batang',serif;font-weight:700;font-size:.92rem;color:var(--ink);border-bottom:1px solid var(--line)}
+  table.guide tbody tr:last-child td{border-bottom:none}
+  table.guide tbody tr:hover td{background:#fcf8f3}
+  .need{font-weight:500;white-space:nowrap;color:var(--ink)}
+  .pick{display:inline-block;font-weight:700;padding:5px 14px;border-radius:999px;font-size:.86rem;white-space:nowrap;margin-right:6px}
+  .pick:last-child{margin-right:0}
+  .line{display:flex;align-items:center;min-height:34px}
+  .pick.wb{background:#ecf2ec;color:#5d7d61}  /* 웨딩북 — 세이지 그린 */
+  .pick.dm{background:#f3e6e1;color:#a85d52}  /* 데어무드 — 로즈 */
+  .pick.tg{background:#e8eef2;color:#5a7894}  /* To our guest — 더스티 블루 */
+  .pick.bj{background:#f6efe0;color:#b58a3c}  /* 보자기카드 — 앰버 골드 */
+  .pick.sl{background:#efe7ef;color:#87637f}  /* 샬롱드레터 — 모브 */
+  .pick.wp{background:#e4efec;color:#4d7d72}  /* 웨딩 피켓 — 뮤트 틸 */
+  .why{color:var(--ink-soft);font-weight:300;font-size:.87rem;line-height:1.5}
+  
 </style>
 </head>
 <body>
@@ -603,21 +626,70 @@
   </div>
 
   <!-- ===== 추천 포인트 ===== -->
-  <div class="picks">
-    <h3>고민될 때 기준 잡기</h3>
-    <ul>
-      <li><b>예산 0원</b> — 웨딩북(완전 무료) </li>
-      <li><b>사진을 많이 넣고 싶다면</b> — 데어무드(100장) &gt; 샬롱드레터·To our guest(60장)</li>
-      <li><b>기능·부가서비스 풀패키지</b> — 데어무드 (1:1 편지 동봉·가계부·대본 등)</li>
-      <li><b>하객 스냅이 중요하다면</b> — To our guest(3개월 무제한) &gt; 샬롱드레터 · 데어무드 (구글계정 연동 - 용량은 따로 구매) </li>
-      <li><b>디자인 선택지</b> —  보자기카드 (159종) · 데어무드(50+종)</li>
-      <li><b>혼주 & 친구용 (1+1) 청첩장 </b> — 웨딩북 (무료)  · To our guest (6월 행사, 하지만 지속적으로 하는 것 같음)  · 데어무드 (리뷰 시) </li>
-      <li><b>예식 당일 안내 팝업 </b> — 샬롱드레터 (본식 당일 위치, 시간, 오시는 길, 전화, 화환 등 필요한 정보만 팝업) </li>
-      <li><b>카카오톡 공유 썸네일에 지도 연동 </b> — 샬롱드레터 (썸네일에 위치, 날짜, 시간 안내, 추가로 지도 연동 버튼) · 데어무드</li>
-      <li><b>사진 AI로 보정이 필요하다면</b> — 웨딩 피켓(11,200원, AI 보정 포함)</li>
-      <li><b>종이청첩장이랑 똑같은 디자인 (기본적인 정보만 제공하는 모청) </b> — 보자기카드 (종이청첩장 구매시 무료, 디자인 159종)</li>
+  <div class="picks-head">
+    <span class="no">02</span>
+    <h2>고민될 때 기준 잡기</h2>
+  </div>
 
-    </ul>
+  <div class="guide-scroll">
+    <table class="guide">
+      <thead>
+        <tr><th>이런 게 고민이라면</th><th>추천</th><th>한마디</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="need">예산 0원</td>
+          <td><span class="pick wb">웨딩북</span></td>
+          <td class="why">완전 무료</td>
+        </tr>
+        <tr>
+          <td class="need">사진을 많이 넣고 싶다면</td>
+          <td><div class="line"><span class="pick dm">데어무드</span></div><div class="line"><span class="pick sl">샬롱드레터</span><span class="pick tg">To our guest</span></div></td>
+          <td class="why"><div class="line">100장</div><div class="line">60장</div></td>
+        </tr>
+        <tr>
+          <td class="need">기능·부가서비스 풀패키지</td>
+          <td><span class="pick dm">데어무드</span></td>
+          <td class="why">1:1 편지 동봉·웨딩가계부·사회자 대본 등</td>
+        </tr>
+        <tr>
+          <td class="need">하객 스냅이 중요하다면</td>
+          <td><div class="line"><span class="pick tg">To our guest</span></div><div class="line"><span class="pick sl">샬롱드레터</span><span class="pick dm">데어무드</span></div></td>
+          <td class="why"><div class="line">자체 클라우드 3개월 무제한</div><div class="line">구글 연동(용량 별도 구매)</div></td>
+        </tr>
+        <tr>
+          <td class="need">디자인 선택지</td>
+          <td><div class="line"><span class="pick bj">보자기카드</span></div><div class="line"><span class="pick dm">데어무드</span></div></td>
+          <td class="why"><div class="line">159종</div><div class="line">50+종</div></td>
+        </tr>
+        <tr>
+          <td class="need">혼주·친구용 (1+1) 청첩장</td>
+          <td><div class="line"><span class="pick wb">웨딩북</span></div><div class="line"><span class="pick tg">To our guest</span></div><div class="line"><span class="pick dm">데어무드</span></div></td>
+          <td class="why"><div class="line">무료</div><div class="line">행사 (상시인 듯)</div><div class="line">리뷰 시</div></td>
+        </tr>
+        <tr>
+          <td class="need">예식 당일 안내 팝업</td>
+          <td><span class="pick sl">샬롱드레터</span></td>
+          <td class="why">당일 위치·시간·오시는 길·전화·화환만 팝업</td>
+        </tr>
+        <tr>
+          <td class="need">카톡 썸네일에 지도 연동</td>
+          <td><span class="pick sl">샬롱드레터</span><span class="pick dm">데어무드</span></td>
+          <td class="why">썸네일에 위치·날짜·시간 + 지도 버튼 </td>
+        </tr>
+        <tr>
+          <td class="need">사진 AI 보정이 필요하다면</td>
+          <td><span class="pick wp">웨딩 피켓</span></td>
+          <td class="why">11,200원에 AI 보정 포함</td>
+        </tr>
+        <tr>
+          <td class="need">종이청첩장과 똑같은 디자인</td>
+          <td><span class="pick bj">보자기카드</span></td>
+          <td class="why">종이청첩장 구매 시 무료 · 디자인 159종</td>
+        </tr>
+      </tbody>
+    </table>
+  </table>
   </div>
 
   <footer>※ 본 비교는 26년 6월 검색 기준입니다. 가격·행사·세부 기능은 업체 사정에 따라 달라질 수 있어 계약 전 확인을 권장드립니다.</footer>
